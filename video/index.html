@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Película Animada Completa — Rear Window: Behind the Scenes | Luciana Peña</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,500;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="video.css" />
+</head>
+<body>
+
+  <div class="cinema-shell">
+
+    <!-- ================= TOP SCENE SELECTOR BAR ================= -->
+    <header class="cinema-topbar">
+      <div class="topbar-left">
+        <a href="../index.html" class="back-to-studio-btn" title="Volver al Estudio de Práctica">
+          ⬅️ Estudio de Práctica
+        </a>
+        <span class="movie-title-pill">🎬 REAR WINDOW: ANIMATED PLAY</span>
+      </div>
+
+      <nav class="scene-tabs-bar" aria-label="Escenas de la obra">
+        <button class="scene-jump-btn has-lu active" data-scene-id="scene-1">Escena 1: Stage 18</button>
+        <button class="scene-jump-btn" data-scene-id="scene-2">Escena 2: Artist's Song</button>
+        <button class="scene-jump-btn has-lu" data-scene-id="scene-2-5">Escena 2.5: Playlist</button>
+        <button class="scene-jump-btn has-lu" data-scene-id="scene-3">Escena 3: Villain's Fear</button>
+        <button class="scene-jump-btn" data-scene-id="scene-4">Escena 4: The Relief</button>
+        <button class="scene-jump-btn has-lu" data-scene-id="scene-5">Final: Curtain Call</button>
+      </nav>
+
+      <div class="topbar-right">
+        <button class="cast-sheet-btn" id="btn-open-cast">👥 Ver los 12 Personajes</button>
+      </div>
+    </header>
+
+    <!-- ================= MAIN ANIMATED STAGE VIEWPORT ================= -->
+    <main class="stage-viewport">
+
+      <!-- Top HUD Overlay -->
+      <div class="stage-hud-top">
+        <div class="scene-badge-hud">
+          <div class="hud-scene-en" id="hud-scene-en">SCENE ONE: WELCOME TO STAGE 18</div>
+          <div class="hud-scene-es" id="hud-scene-es">Escena 1: Bienvenidos al Escenario 18</div>
+        </div>
+        <div class="mode-status-pill" id="hud-mode-pill">
+          🎬 BACKSTAGE — REAL LIFE ON STAGE 18
+        </div>
+      </div>
+
+      <!-- 16:9 SVG Animated Theater Stage -->
+      <div class="stage-svg-wrap">
+        <svg id="stage-svg" viewBox="0 0 1920 820" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <!-- Stage Floor & Backdrop Gradients -->
+            <linearGradient id="gradWall" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0f172a"/>
+              <stop offset="65%" stop-color="#1e1b4b"/>
+              <stop offset="100%" stop-color="#2e1065"/>
+            </linearGradient>
+
+            <linearGradient id="gradFloor" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#3b2618"/>
+              <stop offset="40%" stop-color="#29190f"/>
+              <stop offset="100%" stop-color="#140c07"/>
+            </linearGradient>
+
+            <linearGradient id="gradCurtain" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#7f1d1d"/>
+              <stop offset="50%" stop-color="#991b1b"/>
+              <stop offset="100%" stop-color="#450a0a"/>
+            </linearGradient>
+
+            <radialGradient id="gradSpot" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fde047" stop-opacity="0.75"/>
+              <stop offset="100%" stop-color="#fde047" stop-opacity="0"/>
+            </radialGradient>
+
+            <radialGradient id="gradLuGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#e879f9" stop-opacity="0.5"/>
+              <stop offset="60%" stop-color="#a855f7" stop-opacity="0.2"/>
+              <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+            </radialGradient>
+
+            <linearGradient id="gradLuTag" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#9333ea"/>
+              <stop offset="100%" stop-color="#db2777"/>
+            </linearGradient>
+
+            <radialGradient id="gradWindowGlow" cx="50%" cy="50%" r="60%">
+              <stop offset="0%" stop-color="#fde68a" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.25"/>
+            </radialGradient>
+          </defs>
+
+          <!-- 1. PARAMOUNT STAGE 18 SOUNDSTAGE WALL -->
+          <rect x="0" y="0" width="1920" height="585" fill="url(#gradWall)"/>
+
+          <!-- 1954 Rear Window Apartment Brick Facade in Background -->
+          <g opacity="0.82">
+            <!-- Left Apartment Building (Miss Lonelyhearts & Artist Windows) -->
+            <rect x="210" y="95" width="460" height="490" fill="#3f231d" stroke="#1e110e" stroke-width="4"/>
+            <rect x="260" y="145" width="150" height="195" rx="6" fill="#1e293b" stroke="#78350f" stroke-width="6"/>
+            <rect x="268" y="153" width="134" height="179" fill="url(#gradWindowGlow)" opacity="0.55"/>
+            <line x1="260" y1="242" x2="410" y2="242" stroke="#78350f" stroke-width="5"/>
+            <line x1="335" y1="145" x2="335" y2="340" stroke="#78350f" stroke-width="5"/>
+
+            <rect x="470" y="145" width="150" height="195" rx="6" fill="#1e293b" stroke="#78350f" stroke-width="6"/>
+            <rect x="478" y="153" width="134" height="179" fill="url(#gradWindowGlow)" opacity="0.45"/>
+            <line x1="470" y1="242" x2="620" y2="242" stroke="#78350f" stroke-width="5"/>
+            <line x1="545" y1="145" x2="545" y2="340" stroke="#78350f" stroke-width="5"/>
+
+            <!-- Center Banner: PARAMOUNT STUDIOS STAGE 18 -->
+            <rect x="720" y="105" width="480" height="90" rx="14" fill="#0f172a" stroke="#fbbf24" stroke-width="4"/>
+            <text x="960" y="145" font-size="25" font-weight="900" fill="#fde047" text-anchor="middle" letter-spacing="3">PARAMOUNT STUDIOS · 1954</text>
+            <text x="960" y="176" font-size="18" font-weight="800" fill="#f8fafc" text-anchor="middle" letter-spacing="2">STAGE 18 — REAR WINDOW SET</text>
+
+            <!-- Right Apartment Building (Thorwald's Mysterious Window) -->
+            <rect x="1250" y="95" width="460" height="490" fill="#312026" stroke="#1e110e" stroke-width="4"/>
+            <rect x="1300" y="145" width="155" height="195" rx="6" fill="#0f172a" stroke="#57534e" stroke-width="6"/>
+            <!-- Venetians blinds effect in Thorwald's window -->
+            <g stroke="#334155" stroke-width="4">
+              <line x1="1308" y1="170" x2="1447" y2="170"/>
+              <line x1="1308" y1="190" x2="1447" y2="190"/>
+              <line x1="1308" y1="210" x2="1447" y2="210"/>
+              <line x1="1308" y1="230" x2="1447" y2="230"/>
+            </g>
+            <rect x="1505" y="145" width="155" height="195" rx="6" fill="#1e293b" stroke="#57534e" stroke-width="6"/>
+            <rect x="1513" y="153" width="139" height="179" fill="url(#gradWindowGlow)" opacity="0.35"/>
+          </g>
+
+          <!-- 2. OVERHEAD STUDIO RIGGING & FLICKERING SPOTLIGHTS -->
+          <g id="studio-rig">
+            <rect x="0" y="0" width="1920" height="36" fill="#090b10"/>
+            <line x1="0" y1="36" x2="1920" y2="36" stroke="#475569" stroke-width="4"/>
+            <!-- Hanging Studio Lamps -->
+            <g transform="translate(360,36)">
+              <rect x="-18" y="0" width="36" height="28" rx="5" fill="#334155"/>
+              <polygon points="-26,28 26,28 95,420 -95,420" fill="#fde047" opacity="0.06"/>
+              <ellipse cx="0" cy="28" rx="22" ry="6" fill="#fef08a"/>
+            </g>
+            <g transform="translate(760,36)">
+              <rect x="-18" y="0" width="36" height="28" rx="5" fill="#334155"/>
+              <polygon points="-26,28 26,28 110,420 -110,420" fill="#fde047" opacity="0.07"/>
+              <ellipse cx="0" cy="28" rx="22" ry="6" fill="#fef08a"/>
+            </g>
+            <g transform="translate(1160,36)">
+              <rect x="-18" y="0" width="36" height="28" rx="5" fill="#334155"/>
+              <polygon points="-26,28 26,28 110,420 -110,420" fill="#fde047" opacity="0.07"/>
+              <ellipse cx="0" cy="28" rx="22" ry="6" fill="#fef08a"/>
+            </g>
+            <g transform="translate(1560,36)">
+              <rect x="-18" y="0" width="36" height="28" rx="5" fill="#334155"/>
+              <polygon points="-26,28 26,28 95,420 -95,420" fill="#fde047" opacity="0.06"/>
+              <ellipse cx="0" cy="28" rx="22" ry="6" fill="#fef08a"/>
+            </g>
+          </g>
+
+          <!-- 3. WOODEN STAGE FLOOR -->
+          <rect x="0" y="580" width="1920" height="240" fill="url(#gradFloor)"/>
+          <line x1="0" y1="580" x2="1920" y2="580" stroke="#78350f" stroke-width="5"/>
+          <g stroke="#1c110a" stroke-width="2" opacity="0.55">
+            <line x1="0" y1="630" x2="1920" y2="630"/>
+            <line x1="0" y1="685" x2="1920" y2="685"/>
+            <line x1="0" y1="745" x2="1920" y2="745"/>
+          </g>
+
+          <!-- Side Velvet Stage Curtains -->
+          <path d="M0,0 L125,0 Q95,300 70,620 L0,620 Z" fill="url(#gradCurtain)"/>
+          <path d="M1920,0 L1795,0 Q1825,300 1850,620 L1920,620 Z" fill="url(#gradCurtain)"/>
+
+          <!-- 4. ALL 12 ANIMATED CHARACTER PUPPETS -->
+          <g id="svg-actors-layer"></g>
+
+          <!-- 5. LIGHTING & SPECIAL FX OVERLAY (Notes, Bubbles, Flicker) -->
+          <rect id="svg-lighting-overlay" x="0" y="0" width="1920" height="820" fill="rgba(251,191,36,0.05)" pointer-events="none"/>
+          <g id="svg-fx-layer" pointer-events="none"></g>
+        </svg>
+      </div>
+
+    </main>
+
+    <!-- ================= COMPACT SYNCHRONIZED SUBTITLE STRIP (NO STAGE OVERLAP) ================= -->
+    <section class="subtitle-dock" aria-live="polite">
+      <div class="subtitle-card" id="subtitle-card"></div>
+    </section>
+
+    <!-- ================= BOTTOM TRANSPORT & TIMELINE BAR ================= -->
+    <footer class="transport-bar">
+      <div class="scrubber-row">
+        <div class="scrubber-track-wrap" id="scrubber-track-wrap" title="Haz clic en cualquier punto de la línea de tiempo (los puntos brillantes son las intervenciones de Luciana)">
+          <div class="scrubber-track" id="scrubber-track">
+            <div class="scrubber-fill" id="scrubber-fill"></div>
+          </div>
+        </div>
+        <div class="scrubber-counter" id="scrubber-counter">Diálogo 1 / 127</div>
+      </div>
+
+      <div class="controls-row">
+        <div class="transport-left">
+          <button class="ctrl-btn" id="btn-prev-line" title="Diálogo anterior (Flecha Izquierda)">⏮️ Anterior</button>
+          <button class="ctrl-btn ctrl-btn-play" id="btn-play-toggle" title="Reproducir o Pausar (Barra Espaciadora)">▶️ Reproducir Obra</button>
+          <button class="ctrl-btn" id="btn-next-line" title="Siguiente diálogo (Flecha Derecha)">Siguiente ⏭️</button>
+        </div>
+
+        <div class="transport-center">
+          <button class="ctrl-btn ctrl-btn-luciana" id="btn-prev-lu" title="Ir a la intervención anterior de Luciana">
+            ⭐⬅️ Anterior Luciana
+          </button>
+          <button class="ctrl-btn ctrl-btn-luciana" id="btn-next-lu" title="Saltar directamente al próximo diálogo de Luciana">
+            Siguiente Luciana ➡️⭐
+          </button>
+        </div>
+
+        <div class="transport-right">
+          <label class="ctrl-toggle" title="Pausa automáticamente cuando llega el turno de Luciana para que ella lo diga primero">
+            <input type="checkbox" id="chk-pause-lu" />
+            ⏸️ Pausar en turnos de Luciana
+          </label>
+
+          <label class="ctrl-toggle">
+            <span>Velocidad:</span>
+            <select id="select-speed" style="background:transparent; color:#fff; border:none; font-weight:800; cursor:pointer;">
+              <option value="0.8" style="color:#000;">0.8x (Lento)</option>
+              <option value="0.9" style="color:#000;">0.9x (Práctica)</option>
+              <option value="1" selected style="color:#000;">1.0x (Normal)</option>
+              <option value="1.15" style="color:#000;">1.15x (Rápido)</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ================= MODAL: CHARACTER CAST SHEET ================= -->
+  <div class="cast-modal-backdrop" id="cast-modal-backdrop">
+    <div class="cast-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+        <div>
+          <h2 style="color:var(--gold-bright); font-size:1.35rem;">🌟 Personajes de la Película Animada</h2>
+          <p style="color:#cbd5e1; font-size:0.88rem;">Cada personaje tiene un diseño y vestuario único para que Luciana siempre reconozca quién habla.</p>
+        </div>
+        <button class="ctrl-btn" id="btn-close-cast">✖️ Cerrar</button>
+      </div>
+      <div class="cast-modal-grid" id="cast-modal-grid"></div>
+    </div>
+  </div>
+
+  <script src="../script-data.js"></script>
+  <script src="timeline-data.js"></script>
+  <script src="characters.js"></script>
+  <script src="choreography.js"></script>
+  <script src="soundtrack.js"></script>
+  <script src="player.js"></script>
+</body>
+</html>

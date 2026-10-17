@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stage 18 Studio — Luciana Peña | Assistant Director (MC)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ================= HOLLYWOOD MARQUEE HEADER ================= -->
+  <header class="studio-header">
+    <div class="marquee-lights"></div>
+    <div class="header-inner">
+      <div class="brand-area">
+        <div class="clapper-icon" id="header-clapper" title="¡Haz clic para sonar la claqueta!">🎬</div>
+        <div class="brand-titles">
+          <h1>REAR WINDOW: BEHIND THE SCENES</h1>
+          <div class="brand-subtitle">
+            <span class="badge-star">⭐ Luciana Peña — Assistant Director (MC)</span>
+            <span>• 4th Grade English Festival</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <a href="video/index.html" class="btn-icon-Top" style="background:linear-gradient(135deg,#f59e0b,#db2777); color:#fff; border-color:#fde047; font-weight:800; text-decoration:none; box-shadow:0 0 18px rgba(245,158,11,0.45);">
+          🎬 Ver Película Animada Completa
+        </a>
+
+        <div class="speed-selector" title="Velocidad de la voz en inglés">
+          <button class="speed-btn" data-speed="0.72">🐢 Lento</button>
+          <button class="speed-btn active" data-speed="0.9">🗣️ Normal</button>
+          <button class="speed-btn" data-speed="1.02">🐇 Fluido</button>
+        </div>
+
+        <div class="star-counter" title="Estrellas ganadas practicando">
+          <span>🌟</span>
+          <span id="star-count-display">0</span>
+          <span>Estrellas</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN NAVIGATION TABS ================= -->
+  <nav class="main-nav" aria-label="Modos de práctica">
+    <button class="nav-tab active" data-tab="my-lines">
+      <span class="tab-emoji">⭐</span>
+      <span class="tab-title">1. Mis Diálogos</span>
+      <span class="tab-desc">Aprende qué dices y cómo suena</span>
+    </button>
+
+    <button class="nav-tab" data-tab="teleprompter">
+      <span class="tab-emoji">🎥</span>
+      <span class="tab-title">2. Modo Video Karaoke</span>
+      <span class="tab-desc">Audio + subtítulos sincronizados</span>
+    </button>
+
+    <button class="nav-tab" data-tab="rehearsal">
+      <span class="tab-emoji">🎭</span>
+      <span class="tab-title">3. Ensayo con Compañeros</span>
+      <span class="tab-desc">Obra completa con tus entradas</span>
+    </button>
+
+    <button class="nav-tab" data-tab="games">
+      <span class="tab-emoji">🎮</span>
+      <span class="tab-title">4. Juegos de Práctica</span>
+      <span class="tab-desc">Retos de entrada y memoria</span>
+    </button>
+
+    <button class="nav-tab" data-tab="story">
+      <span class="tab-emoji">📖</span>
+      <span class="tab-title">5. La Historia y Resumen</span>
+      <span class="tab-desc">Personajes y hoja para imprimir</span>
+    </button>
+  </nav>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="app-container">
+
+    <!-- WELCOME & PROGRESS BANNER -->
+    <section class="welcome-banner">
+      <div class="welcome-text">
+        <h2>✨ ¡Bienvenida al Escenario 18, Luciana!</h2>
+        <p>
+          Eres la <strong>Assistant Director (Asistente de Dirección)</strong> de la película en Hollywood de 1954.
+          Aquí podrás escuchar tus diálogos, entender exactamente qué significan en español, descubrir qué compañero habla antes que tú y ver la película animada completa.
+        </p>
+        <div style="margin-top:12px;">
+          <a href="video/index.html" class="btn-action btn-primary-listen" style="text-decoration:none; background:linear-gradient(135deg,#f59e0b,#ec4899); color:#fff;">
+            🍿 Abrir Video / Animación de Toda la Obra (Con Voces y Subtítulos Sincronizados) ➡️
+          </a>
+        </div>
+      </div>
+      <div class="progress-card">
+        <div class="progress-label">
+          <span>🏆 Tu Progreso</span>
+          <span id="mastery-progress-label">0 de 9 diálogos dominados (0%)</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="mastery-progress-fill"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 1: MIS DIÁLOGOS (LUCIANA'S COACHING STUDIO) -->
+    <section id="panel-my-lines" class="tab-panel active">
+      <div class="studio-layout">
+        <aside class="lines-sidebar">
+          <div class="sidebar-header">
+            <h3>📋 Tus 9 Intervenciones</h3>
+          </div>
+          <div class="line-nav-list" id="luciana-lines-nav"></div>
+        </aside>
+
+        <div class="coaching-stage" id="luciana-coaching-stage"></div>
+      </div>
+    </section>
+
+    <!-- TAB 2: MODO VIDEO KARAOKE / TELEPROMPTER -->
+    <section id="panel-teleprompter" class="tab-panel">
+      <div id="teleprompter-container"></div>
+    </section>
+
+    <!-- TAB 3: ENSAYO CON COMPAÑEROS (FULL SCRIPT REHEARSAL) -->
+    <section id="panel-rehearsal" class="tab-panel">
+      <div id="rehearsal-container"></div>
+    </section>
+
+    <!-- TAB 4: JUEGOS DE ENTRADA Y COMPRENSIÓN -->
+    <section id="panel-games" class="tab-panel">
+      <div id="games-container"></div>
+    </section>
+
+    <!-- TAB 5: LA HISTORIA, ELENCO Y HOJA IMPRIMIBLE -->
+    <section id="panel-story" class="tab-panel">
+      <div id="story-container"></div>
+    </section>
+
+  </main>
+
+  <script src="script-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

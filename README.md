@@ -4,15 +4,24 @@ Aplicación interactiva y película animada diseñada para que **Luciana Peña**
 
 ---
 
+## 🌐 Enlaces para Abrir la Aplicación (GitHub Pages)
+
+- 👉 **[🎓 Abrir Estudio Interactivo de Luciana](https://fabianp60.github.io/guion-english-festival/)**  
+  `https://fabianp60.github.io/guion-english-festival/`
+- 👉 **[🎥 Abrir Película Animada del Guion Completo](https://fabianp60.github.io/guion-english-festival/video/index.html)**  
+  `https://fabianp60.github.io/guion-english-festival/video/index.html`
+
+---
+
 ## 🌟 Componentes Incluidos
 
-### 1. 🎓 Estudio Interactivo de Luciana (`index.html`)
+### 1. [🎓 Estudio Interactivo de Luciana (`index.html`)](https://fabianp60.github.io/guion-english-festival/)
 - **Mis 9 Diálogos (Paso a Paso):** Tarjetas con audio sincronizado palabra por palabra (Modo Karaoke), traducción al español, significado profundo de cada frase, vocabulario clave, guía de actuación y escalera de memorización en 4 niveles (Completa → Pistas → Iniciales → De Memoria) con grabadora de voz.
 - **Ensayo de Entradas (*Cue Trainer*):** Entrenador para escuchar el pie (*cue*) del compañero anterior y responder a tiempo como Assistant Director.
 - **Teatro Completo (127 líneas):** Guion completo dividido en las 6 escenas con voces diferenciadas por personaje y pausa automática en los turnos de Luciana.
 - **Juegos de Comprensión:** Retos interactivos sobre qué significa cada línea, en qué momento entrar y vocabulario clave.
 
-### 2. 🎥 Película Animada del Guion Completo (`video/index.html`)
+### 2. [🎥 Película Animada del Guion Completo (`video/index.html`)](https://fabianp60.github.io/guion-english-festival/video/index.html)
 - **12 Personajes Animados Consistentes:** Marionetas SVG articuladas con vestuario, accesorios (*clapperboard*, auriculares, binoculares, cámara, parlante, roca de la suerte) y expresiones faciales.
 - **103 Voces Neurales Reales + Efectos y Música:**
   - Voces en inglés con resaltado exacto palabra por palabra (`WordBoundary`).

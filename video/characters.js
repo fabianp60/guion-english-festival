@@ -1,7 +1,8 @@
 /* ==========================================================================
    CHARACTERS — consistent cartoon cast for "Rear Window: Behind the Scenes"
    Each character is a jointed SVG puppet (head, eyes, brows, mouth, 2-segment
-   arms, legs, props) so the player can make them act line by line.
+   arms, 2-segment legs, props, tears, sweat, powder puffs) so the player can
+   make them act line by line at 60 FPS.
    Local coordinates: feet at (0,0), head centre at (0,-262).
    ========================================================================== */
 (function () {
@@ -75,6 +76,7 @@
   const POSES = {
     rest:      { L: [8, 6], R: [8, 6] },
     holdR:     { L: [8, 6], R: [12, -40] },
+    holdL:     { L: [12, -40], R: [8, 6] },
     clipboard: { L: [-12, -78], R: [8, 6] },
     mcIdle:    { L: [8, 6], R: [10, -70] },
     mic:       { L: [8, 6], R: [-12, -150] },
@@ -92,8 +94,9 @@
     handChest: { L: [8, 6], R: [-16, -118] },
     reachR:    { L: [8, 6], R: [78, 8] },
     reachL:    { L: [78, 8], R: [8, 6] },
-    raiseR:    { L: [8, 6], R: [160, 18] },
+    raiseR:    { L: [8, 6], R: [142, 22] },
     holdUpR:   { L: [8, 6], R: [150, 25] },
+    holdUpL:   { L: [150, 25], R: [8, 6] },
     showR:     { L: [8, 6], R: [70, 85] },
     palmsOut:  { L: [48, 100], R: [48, 100] },
     hairTouch: { L: [8, 6], R: [118, 125] },
@@ -101,17 +104,20 @@
     cheeks:    { L: [-4, -156], R: [-4, -156], head: 4 },
     ears:      { L: [98, 150], R: [98, 150] },
     shrug:     { L: [36, 75], R: [36, 75], head: 8 },
-    loom:      { L: [72, 30], R: [72, 30], head: 6 },
+    loom:      { L: [72, 30], R: [88, 18], head: 6 },
     armsUp:    { L: [150, 15], R: [150, 15], head: -6 },
     belly:     { L: [-14, -96], R: [-14, -96] },
-    nudge:     { L: [8, 6], R: [42, -100] },
+    nudge:     { L: [8, 6], R: [52, -100] },
     holdBoth:  { L: [60, 75], R: [60, 75] },
-    ukulele:   { L: [-28, -95], R: [-6, -55] },
+    ukulele:   { L: [-28, -95], R: [-14, -68] },
     speaker:   { L: [-30, -70], R: [-14, -80] },
-    binocs:    { L: [-6, -150], R: [-6, -150] },
+    binocs:    { L: [-10, -148], R: [-10, -148], head: -3 },
     wag:       { L: [8, 6], R: [70, 95] },
     openR:     { L: [8, 6], R: [42, 60] },
-    selfHug:   { L: [-28, -90], R: [-28, -84], head: 10 }
+    selfHug:   { L: [-28, -90], R: [-28, -84], head: 10 },
+    powderL:   { L: [88, 28], R: [-18, -68], head: -4 },
+    powderR:   { L: [-18, -68], R: [88, 28], head: 4 },
+    filmCam:   { L: [-14, -126], R: [14, -45], head: 2 }
   };
 
   // Expressions: brow rotation (inner end up = +), mouth shape
@@ -151,20 +157,38 @@
 
   // ---------- PROPS (drawn upright, origin = hand centre) ----------
   const PROP_SVG = {
-    megaphone: `<g><path d="M-6,-6 L30,-26 L30,22 L-6,6 Z" fill="#d6a865" stroke="#8a5a2b" stroke-width="3"/><ellipse cx="30" cy="-2" rx="7" ry="24" fill="#b88446" stroke="#8a5a2b" stroke-width="3"/></g>`,
+    megaphone: `<g><path d="M-6,-6 L34,-28 L34,24 L-6,6 Z" fill="#d6a865" stroke="#8a5a2b" stroke-width="3"/><ellipse cx="34" cy="-2" rx="7" ry="26" fill="#b88446" stroke="#8a5a2b" stroke-width="3"/><path d="M44,-14 Q54,-2 44,10 M52,-22 Q65,-2 52,18" stroke="#fde047" stroke-width="2.5" fill="none" stroke-linecap="round" class="mega-waves" opacity="0.8"/></g>`,
     clipboard: `<g transform="translate(6,-26)"><rect x="-20" y="-26" width="40" height="52" rx="5" fill="#a16207" stroke="#713f12" stroke-width="2"/><rect x="-15" y="-19" width="30" height="40" fill="#fff"/><rect x="-9" y="-30" width="18" height="9" rx="3" fill="#94a3b8"/><path d="M-10,-10 h20 M-10,-2 h20 M-10,6 h14" stroke="#64748b" stroke-width="2.5"/><text x="0" y="17" font-size="9" text-anchor="middle" fill="#7c3aed" font-weight="800">★ AD</text></g>`,
-    suitcase: `<g transform="translate(0,26)"><rect x="-30" y="-14" width="60" height="42" rx="6" fill="#7c4a1e" stroke="#4a2c10" stroke-width="3"/><path d="M-10,-14 v-10 h20 v10" fill="none" stroke="#4a2c10" stroke-width="4"/><path d="M-30,6 h60" stroke="#c19a6b" stroke-width="3"/></g>`,
+    suitcase: `<g transform="translate(0,26)"><rect x="-30" y="-14" width="60" height="42" rx="6" fill="#7c4a1e" stroke="#4a2c10" stroke-width="3"/><path d="M-10,-14 v-10 h20 v10" fill="none" stroke="#4a2c10" stroke-width="4"/><path d="M-30,6 h60" stroke="#c19a6b" stroke-width="3"/><rect x="-22" y="-14" width="6" height="42" fill="#5c3412" opacity=".6"/><rect x="16" y="-14" width="6" height="42" fill="#5c3412" opacity=".6"/></g>`,
     mic: `<g><rect x="-4" y="-34" width="8" height="34" rx="3" fill="#1f2937"/><circle cx="0" cy="-40" r="10" fill="#9ca3af" stroke="#4b5563" stroke-width="2"/></g>`,
-    clapper: `<g transform="translate(4,-28)"><rect x="-26" y="-14" width="52" height="34" rx="3" fill="#111827"/><text x="0" y="10" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">STAGE 18</text><g class="clap-arm"><rect x="-26" y="-26" width="52" height="11" fill="#fff" stroke="#111" stroke-width="2"/><path d="M-20,-26 l8,11 M-6,-26 l8,11 M8,-26 l8,11" stroke="#111" stroke-width="5"/></g></g>`,
+    clapper: `<g class="clapper-prop" transform="translate(4,-28)">
+      <rect x="-30" y="-14" width="60" height="40" rx="4" fill="#111827" stroke="#f8fafc" stroke-width="2"/>
+      <line x1="-24" y1="-2" x2="24" y2="-2" stroke="#475569" stroke-width="1.5"/>
+      <text x="0" y="11" font-size="9.5" fill="#fde047" text-anchor="middle" font-weight="900">STAGE 18</text>
+      <text x="0" y="21" font-size="7" fill="#e2e8f0" text-anchor="middle" font-weight="700">TAKE 1 · 1954</text>
+      <rect x="-30" y="-20" width="60" height="7" fill="#fff" stroke="#111" stroke-width="1.5"/>
+      <path d="M-22,-20 l6,7 M-6,-20 l6,7 M10,-20 l6,7" stroke="#111" stroke-width="4.5"/>
+      <g class="clap-arm" style="transform-origin: -28px -20px;">
+        <rect x="-30" y="-31" width="60" height="11" rx="2" fill="#fff" stroke="#111" stroke-width="2"/>
+        <path d="M-22,-31 l8,11 M-6,-31 l8,11 M10,-31 l8,11" stroke="#111" stroke-width="5"/>
+        <circle cx="-26" cy="-22" r="2.5" fill="#fbbf24"/>
+      </g>
+      <g class="clack-burst" opacity="0" transform="translate(0,-38)">
+        <polygon points="0,-24 7,-9 24,-12 12,0 22,14 5,9 0,24 -5,9 -22,14 -12,0 -24,-12 -7,-9" fill="#fde047" stroke="#ea580c" stroke-width="2"/>
+        <text x="0" y="4" font-size="11" font-weight="900" fill="#111827" text-anchor="middle">CLACK!</text>
+      </g>
+    </g>`,
     magnifier: `<g><rect x="-3" y="-30" width="6" height="30" rx="3" fill="#78350f"/><circle cx="0" cy="-44" r="15" fill="#bae6fd" fill-opacity=".55" stroke="#a16207" stroke-width="5"/></g>`,
-    brush: `<g><rect x="-3.5" y="-26" width="7" height="28" rx="3" fill="#1f2937"/><ellipse cx="0" cy="-36" rx="12" ry="14" fill="#f9a8d4"/></g>`,
-    hanky: `<g><path d="M-10,-6 L12,-14 L16,8 L-6,14 Z" fill="#fff" stroke="#cbd5e1" stroke-width="2"/></g>`,
-    clay: `<g><ellipse cx="0" cy="-16" rx="16" ry="12" fill="#a8806a" stroke="#6b4b3a" stroke-width="2"/></g>`,
-    horse: `<g transform="translate(0,-22)"><ellipse cx="0" cy="0" rx="18" ry="9" fill="#a8806a" stroke="#6b4b3a" stroke-width="2"/><path d="M12,-4 l8,-14 l6,2 l-4,14 Z" fill="#a8806a" stroke="#6b4b3a" stroke-width="2"/><path d="M-12,6 v10 M-4,6 v10 M6,6 v10 M14,6 v10" stroke="#6b4b3a" stroke-width="3"/></g>`,
-    rock: `<g><path d="M-10,-8 Q-12,-20 0,-20 Q12,-20 11,-8 Q8,0 -2,0 Q-10,0 -10,-8 Z" fill="#9ca3af" stroke="#4b5563" stroke-width="2"/></g>`,
-    speaker: `<g transform="translate(0,-18)"><rect x="-30" y="-20" width="60" height="38" rx="9" fill="#1f2937" stroke="#7c3aed" stroke-width="3"/><circle cx="-13" cy="-1" r="10" fill="#4b5563" stroke="#a78bfa" stroke-width="2"/><circle cx="13" cy="-1" r="10" fill="#4b5563" stroke="#a78bfa" stroke-width="2"/></g>`,
-    camera: `<g transform="translate(0,-16)"><rect x="-20" y="-14" width="40" height="28" rx="4" fill="#374151"/><circle cx="0" cy="0" r="9" fill="#111827" stroke="#9ca3af" stroke-width="2"/></g>`,
-    ukulele: `<g transform="rotate(-35)"><ellipse cx="0" cy="18" rx="22" ry="26" fill="#c2763b" stroke="#7c3f14" stroke-width="3"/><circle cx="0" cy="14" r="6" fill="#3b1d0a"/><rect x="-4" y="-50" width="8" height="52" fill="#7c3f14"/></g>`
+    brush: `<g class="makeup-brush"><rect x="-4" y="-30" width="8" height="32" rx="3.5" fill="#1f2937"/><rect x="-4.5" y="-35" width="9" height="6" rx="1" fill="#fbbf24"/><ellipse cx="0" cy="-46" rx="14" ry="16" fill="#f472b6" stroke="#ec4899" stroke-width="2"/><circle cx="-6" cy="-54" r="3" fill="#fbcfe8" opacity=".85"/><circle cx="7" cy="-50" r="2.5" fill="#fdf2f8" opacity=".9"/></g>`,
+    powderPuff: `<g><circle cx="0" cy="-16" r="16" fill="#f9a8d4" stroke="#ec4899" stroke-width="2.5"/><circle cx="0" cy="-16" r="11" fill="#fdf2f8"/><path d="M-6,-16 h12" stroke="#f472b6" stroke-width="3" stroke-linecap="round"/></g>`,
+    binoculars: `<g transform="translate(0,-14)"><rect x="-24" y="-12" width="19" height="26" rx="5" fill="#1e293b" stroke="#0f172a" stroke-width="2.5"/><rect x="5" y="-12" width="19" height="26" rx="5" fill="#1e293b" stroke="#0f172a" stroke-width="2.5"/><rect x="-6" y="-5" width="12" height="8" rx="2" fill="#475569"/><circle cx="-14.5" cy="-12" r="8" fill="#38bdf8" stroke="#94a3b8" stroke-width="2"/><circle cx="14.5" cy="-12" r="8" fill="#38bdf8" stroke="#94a3b8" stroke-width="2"/><circle cx="-16" cy="-14" r="2.5" fill="#fff" opacity=".8"/><circle cx="13" cy="-14" r="2.5" fill="#fff" opacity=".8"/></g>`,
+    hanky: `<g><path d="M-12,-8 L14,-18 L20,10 L-8,16 Z" fill="#fff" stroke="#cbd5e1" stroke-width="2"/><path d="M-4,-2 Q4,4 10,-4" stroke="#e2e8f0" stroke-width="2" fill="none"/></g>`,
+    clay: `<g><ellipse cx="0" cy="-16" rx="18" ry="13" fill="#a8806a" stroke="#6b4b3a" stroke-width="2.5"/><ellipse cx="-5" cy="-19" rx="6" ry="4" fill="#c29b84" opacity=".6"/></g>`,
+    horse: `<g transform="translate(0,-24)"><ellipse cx="0" cy="0" rx="20" ry="10" fill="#a8806a" stroke="#6b4b3a" stroke-width="2.5"/><path d="M12,-4 l9,-16 l8,3 l-5,15 Z" fill="#a8806a" stroke="#6b4b3a" stroke-width="2.5"/><ellipse cx="26" cy="-16" rx="6" ry="4" fill="#a8806a" stroke="#6b4b3a" stroke-width="2"/><path d="M-12,6 v12 M-4,6 v12 M6,6 v12 M14,6 v12" stroke="#6b4b3a" stroke-width="3.5"/><path d="M-18,-2 l-8,8" stroke="#6b4b3a" stroke-width="3" stroke-linecap="round"/></g>`,
+    rock: `<g><circle cx="0" cy="-12" r="18" fill="#fde047" opacity="0.28"/><path d="M-12,-8 Q-15,-23 0,-23 Q15,-23 13,-8 Q10,2 -2,2 Q-12,2 -12,-8 Z" fill="#9ca3af" stroke="#4b5563" stroke-width="2.5"/><path d="M-5,-16 L2,-18 L5,-12" stroke="#e5e7eb" stroke-width="2" fill="none" stroke-linecap="round"/></g>`,
+    speaker: `<g transform="translate(0,-18)"><rect x="-32" y="-22" width="64" height="42" rx="9" fill="#1f2937" stroke="#7c3aed" stroke-width="3"/><circle cx="-14" cy="-1" r="11" fill="#4b5563" stroke="#a78bfa" stroke-width="2.5"/><circle cx="14" cy="-1" r="11" fill="#4b5563" stroke="#a78bfa" stroke-width="2.5"/><circle cx="-14" cy="-1" r="4" fill="#ddd6fe"/><circle cx="14" cy="-1" r="4" fill="#ddd6fe"/></g>`,
+    camera: `<g transform="translate(0,-18)"><rect x="-24" y="-16" width="48" height="32" rx="5" fill="#374151" stroke="#111827" stroke-width="2.5"/><circle cx="-10" cy="-24" r="9" fill="#1f2937" stroke="#4b5563" stroke-width="2"/><circle cx="10" cy="-24" r="9" fill="#1f2937" stroke="#4b5563" stroke-width="2"/><polygon points="24,-6 38,-14 38,10 24,2" fill="#111827"/><circle cx="0" cy="0" r="10" fill="#111827" stroke="#38bdf8" stroke-width="2.5"/></g>`,
+    ukulele: `<g transform="rotate(-35)"><ellipse cx="0" cy="18" rx="22" ry="26" fill="#c2763b" stroke="#7c3f14" stroke-width="3"/><circle cx="0" cy="14" r="6" fill="#3b1d0a"/><rect x="-4" y="-50" width="8" height="52" fill="#7c3f14"/><line x1="-1.5" y1="-46" x2="-1.5" y2="28" stroke="#fef08a" stroke-width="1"/><line x1="1.5" y1="-46" x2="1.5" y2="28" stroke="#fef08a" stroke-width="1"/></g>`
   };
 
   // ---------- HAIR ----------
@@ -263,7 +287,7 @@
 
   // ---------- LOWER BODY VARIANTS ----------
   function lowerBody(L, cast) {
-    const leg = (x) => `<g class="leg leg-${x < 0 ? "l" : "r"}"><rect x="${x - 10}" y="-100" width="20" height="88" rx="9" fill="${L.legs}"/><ellipse cx="${x + (x < 0 ? -3 : 3)}" cy="-9" rx="18" ry="10" fill="${L.shoes}"/></g>`;
+    const leg = (x) => `<g class="leg leg-${x < 0 ? "l" : "r"}" style="transform-origin: ${x}px -96px;"><rect x="${x - 10}" y="-100" width="20" height="88" rx="9" fill="${L.legs}"/><ellipse class="shoe" cx="${x + (x < 0 ? -3 : 3)}" cy="-9" rx="18" ry="10" fill="${L.shoes}"/></g>`;
     const stand = `<g class="lower-stand">${leg(-16)}${leg(16)}</g>`;
     const castLeg = cast ? `<rect x="5" y="-62" width="24" height="56" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2"/><path d="M7,-48 h20 M7,-36 h20 M7,-24 h20" stroke="#cbd5e1" stroke-width="2"/>` : "";
     const sit = `<g class="lower-sit">
@@ -317,7 +341,7 @@
             ${hairBack(L)}
             <circle cx="-58" cy="-258" r="11" fill="${L.skin}"/><circle cx="58" cy="-258" r="11" fill="${L.skin}"/>
             <circle cx="0" cy="-262" r="60" fill="${L.skin}"/>
-            <ellipse cx="-34" cy="-240" rx="10" ry="6" fill="#ff6b8b" opacity=".33"/><ellipse cx="34" cy="-240" rx="10" ry="6" fill="#ff6b8b" opacity=".33"/>
+            <ellipse class="cheek-l" cx="-34" cy="-240" rx="10" ry="6" fill="#ff6b8b" opacity=".33"/><ellipse class="cheek-r" cx="34" cy="-240" rx="10" ry="6" fill="#ff6b8b" opacity=".33"/>
             <g class="eye eye-l"><ellipse cx="-22" cy="-266" rx="11" ry="13" fill="#fff"/><circle class="pupil" cx="-22" cy="-264" r="6.5" fill="#2b1d14"/><circle class="glint" cx="-20" cy="-267" r="2" fill="#fff"/></g>
             <g class="eye eye-r"><ellipse cx="22" cy="-266" rx="11" ry="13" fill="#fff"/><circle class="pupil" cx="22" cy="-264" r="6.5" fill="#2b1d14"/><circle class="glint" cx="24" cy="-267" r="2" fill="#fff"/></g>
             <path class="brow brow-l" d="M-33,-288 Q-22,-295 -11,-289" stroke="${shade(L.hairColor, -10)}" stroke-width="4.5" stroke-linecap="round" fill="none"/>
@@ -325,6 +349,23 @@
             <ellipse cx="0" cy="-249" rx="4.5" ry="3.5" fill="${shade(L.skin, -35)}"/>
             <path class="mouth" d="${MOUTHS.smile}" stroke="#7a1f2b" stroke-width="4" stroke-linecap="round" fill="#7a1f2b"/>
             <ellipse class="mouth-open" cx="0" cy="-233" rx="11" ry="0" fill="#7a1f2b"/>
+            <!-- Animated Tears Layer -->
+            <g class="tears-layer" opacity="0">
+              <path class="tear-l" d="M-24,-250 Q-29,-238 -24,-234 Q-19,-238 -24,-250 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+              <path class="tear-r" d="M24,-250 Q19,-238 24,-234 Q29,-238 24,-250 Z" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+            </g>
+            <!-- Animated Nervous Sweat Drop -->
+            <g class="sweat-layer" opacity="0">
+              <path class="sweat-drop" d="M48,-295 Q41,-276 48,-270 Q55,-276 48,-295 Z" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5"/>
+            </g>
+            <!-- Animated Makeup Powder Puffs on Face -->
+            <g class="powder-layer" opacity="0">
+              <circle class="puff-1" cx="-36" cy="-244" r="14" fill="#fbcfe8" fill-opacity="0.72"/>
+              <circle class="puff-2" cx="32" cy="-246" r="13" fill="#f9a8d4" fill-opacity="0.68"/>
+              <circle class="puff-3" cx="0" cy="-272" r="11" fill="#fdf2f8" fill-opacity="0.75"/>
+              <text x="-46" y="-266" font-size="16">✨</text>
+              <text x="34" y="-262" font-size="15">✨</text>
+            </g>
             ${hairFront(L)}
             ${L.glasses ? `<g fill="none" stroke="#111" stroke-width="4"><circle cx="-22" cy="-266" r="16"/><circle cx="22" cy="-266" r="16"/><path d="M-6,-268 h12"/></g>` : ""}
             ${hat(L)}

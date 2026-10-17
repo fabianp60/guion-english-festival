@@ -195,7 +195,7 @@ LINE_ACTING_MAP: dict[int, tuple[str, str]] = {
     ),
     3: (
         "loud, proud, booming and theatrical like a classic movie director announcing through a megaphone",
-        "Welcome to Stage 18, Paramount Studios! Summer, 1954! Biggest indoor set ever built! <short pause> Don't break anything!",
+        "Welcome to Stage 18, Paramount Studios! Summer, 1954! Biggest indoor set ever built! Don't break anything!",
     ),
     4: (
         "urgent, worried and alert, pointing up at the ceiling lights to warn the Director",

@@ -11,7 +11,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/luciana_voice_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:35:32.291390+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "LUCIANA": {
     "voice_id": "voice_h4trbfd9zqeg",
@@ -25,7 +25,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/luciana_voice_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:35:32.291390+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "CEREMONY_MASTER": {
     "voice_id": "voice_0hkdrp9y5zo8",
@@ -39,7 +39,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/ceremony_master_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:38:06.388559+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "DIRECTOR": {
     "voice_id": "Puck",
@@ -53,7 +53,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/director_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:38:30.693254+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "MAKEUP_MASTER": {
     "voice_id": "Leda",
@@ -67,7 +67,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/makeup_master_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:38:45.432261+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "JEFF": {
     "voice_id": "Fenrir",
@@ -81,7 +81,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/jeff_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:38:57.398773+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "LISA": {
     "voice_id": "Aoede",
@@ -95,7 +95,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/lisa_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:39:15.548344+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "THORWALD": {
     "voice_id": "voice_h1gy5gzssuj6",
@@ -109,7 +109,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/thorwald_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:39:47.788247+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "DETECTIVE": {
     "voice_id": "Zephyr",
@@ -123,7 +123,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/detective_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:40:05.786752+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "MISS_LONELYHEARTS": {
     "voice_id": "Callirrhoe",
@@ -137,7 +137,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/miss_lonelyhearts_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:40:23.196238+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "ARTIST": {
     "voice_id": "voice_iwep4fvs5h5t",
@@ -151,7 +151,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/artist_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:40:54.280111+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "CAMERA_MAN": {
     "voice_id": "Autonoe",
@@ -165,7 +165,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/camera_man_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:41:17.499808+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "PROP_MASTER": {
     "voice_id": "voice_yyr9ja4jabg3",
@@ -179,7 +179,7 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/prop_master_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:41:43.718653+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   },
   "CAST": {
     "voice_id": "voice_k2npo4auo7xa",
@@ -193,6 +193,6 @@
     "preview_path": "/home/fabian/projects/guion-english-festival/video/audio/previews/cast_preview.wav",
     "model": "gemini-3.8-flash-tts",
     "created_at": "2026-10-17T04:42:03.056365+00:00",
-    "updated_at": "2026-10-17T12:11:51Z"
+    "updated_at": "2026-10-17T13:17:47Z"
   }
 }

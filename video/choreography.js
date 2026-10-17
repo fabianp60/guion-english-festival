@@ -31,7 +31,7 @@
         CEREMONY_MASTER:    { x: 180,  y: 710, scale: 0.86, vis: false, pose: "mcIdle", expr: "happy" },
         DIRECTOR:           { x: 960,  y: 695, scale: 0.94, vis: true,  pose: "holdR", expr: "happy", propR: "megaphone" },
         ASSISTANT_DIRECTOR: { x: 740,  y: 705, scale: 0.94, vis: true,  pose: "clipboard", expr: "neutral", propL: "clipboard" },
-        MAKEUP_MASTER:      { x: 470,  y: 705, scale: 0.88, vis: true,  pose: "holdR", expr: "happy", propR: "brush" },
+        MAKEUP_MASTER:      { x: 440,  y: 705, scale: 0.88, vis: true,  pose: "holdR", expr: "happy", propR: "brush", propL: "powderPuff" },
         JEFF:               { x: 340,  y: 710, scale: 0.90, vis: true,  pose: "rest", expr: "neutral", stance: "sit", wheelchair: true },
         LISA:               { x: 585,  y: 700, scale: 0.88, vis: true,  pose: "clasp", expr: "happy" },
         CAMERA_MAN:         { x: 1170, y: 700, scale: 0.90, vis: true,  pose: "holdR", expr: "neutral", propR: "clapper" },
@@ -53,7 +53,7 @@
         DIRECTOR:           { x: 1540, y: 700, scale: 0.88, vis: true,  pose: "holdR", expr: "calm", propR: "megaphone" },
         CAMERA_MAN:         { x: 1690, y: 705, scale: 0.88, vis: true,  pose: "holdR", expr: "neutral", propR: "camera" },
         ASSISTANT_DIRECTOR: { x: 1390, y: 705, scale: 0.90, vis: true,  pose: "clipboard", expr: "tender", propL: "clipboard" },
-        MAKEUP_MASTER:      { x: 520,  y: 700, scale: 0.85, vis: true,  pose: "holdR", expr: "neutral", propR: "brush" },
+        MAKEUP_MASTER:      { x: 520,  y: 700, scale: 0.85, vis: true,  pose: "holdR", expr: "neutral", propR: "brush", propL: "powderPuff" },
         PROP_MASTER:        { x: 380,  y: 700, scale: 0.85, vis: true,  pose: "rest", expr: "neutral", propR: "clay" },
         DETECTIVE:          { x: 240,  y: 700, scale: 0.85, vis: true,  pose: "rest", expr: "neutral" },
         LISA:               { x: 600,  y: 685, scale: 0.84, vis: false, pose: "clasp", expr: "calm" },
@@ -72,7 +72,7 @@
         DIRECTOR:           { x: 560,  y: 700, scale: 0.90, vis: true,  pose: "hips", expr: "grumpy", propR: "megaphone" },
         THORWALD:           { x: 1470, y: 705, scale: 0.92, vis: true,  pose: "crossed", expr: "grumpy" },
         DETECTIVE:          { x: 1300, y: 705, scale: 0.90, vis: true,  pose: "hips", expr: "happy" },
-        MAKEUP_MASTER:      { x: 390,  y: 700, scale: 0.86, vis: true,  pose: "holdR", expr: "worried", propR: "brush" },
+        MAKEUP_MASTER:      { x: 390,  y: 700, scale: 0.86, vis: true,  pose: "holdR", expr: "worried", propR: "brush", propL: "powderPuff" },
         CAMERA_MAN:         { x: 1140, y: 700, scale: 0.88, vis: true,  pose: "holdR", expr: "happy", propR: "clapper" },
         LISA:               { x: 1640, y: 700, scale: 0.88, vis: true,  pose: "wide", expr: "happy" },
         JEFF:               { x: 230,  y: 708, scale: 0.86, vis: true,  pose: "rest", expr: "happy", stance: "sit", wheelchair: true },
@@ -92,7 +92,7 @@
         DIRECTOR:           { x: 1320, y: 705, scale: 0.90, vis: true,  pose: "holdR", expr: "calm", propR: "megaphone" },
         CAMERA_MAN:         { x: 1490, y: 705, scale: 0.88, vis: true,  pose: "holdR", expr: "happy", propR: "clapper" },
         LISA:               { x: 700,  y: 700, scale: 0.88, vis: true,  pose: "clasp", expr: "tender" },
-        MAKEUP_MASTER:      { x: 340,  y: 700, scale: 0.85, vis: true,  pose: "clasp", expr: "tender", propR: "brush" },
+        MAKEUP_MASTER:      { x: 340,  y: 700, scale: 0.85, vis: true,  pose: "clasp", expr: "tender", propR: "brush", propL: "powderPuff" },
         PROP_MASTER:        { x: 1640, y: 700, scale: 0.86, vis: true,  pose: "holdR", expr: "happy", propR: "rock" },
         DETECTIVE:          { x: 1775, y: 698, scale: 0.85, vis: true,  pose: "hips", expr: "happy" },
         ARTIST:             { x: 200,  y: 698, scale: 0.84, vis: true,  pose: "holdR", expr: "happy", propR: "horse" },
@@ -139,12 +139,18 @@
     }
   };
 
-  // Clone helper
+  // Clone helper with extended acting properties
   function cloneActors(map) {
     const out = {};
     for (const k of ALL_ACTORS) {
       out[k] = Object.assign(
-        { x: 960, y: 700, scale: 0.88, vis: false, pose: "rest", expr: "neutral", stance: "stand", wheelchair: false, propL: null, propR: null, dance: false, nod: false, shake: false, bow: false },
+        {
+          x: 960, y: 700, scale: 0.88, vis: false,
+          pose: "rest", expr: "neutral", stance: "stand",
+          wheelchair: false, propL: null, propR: null,
+          dance: false, nod: false, shake: false, bow: false,
+          act: null, crying: false, sweat: false, powdered: false
+        },
         map[k] || {}
       );
     }
@@ -193,7 +199,7 @@
     const actors = cloneActors(baseScene.actors);
     let lighting = baseScene.lighting;
     let backdrop = baseScene.backdrop;
-    let fx = { flicker: false, clapper: false, filmMode: false, musicNotes: false, rockMode: false, partyMode: false, bubbles: false };
+    let fx = { flicker: false, clapper: false, filmMode: false, musicNotes: false, rockMode: false, partyMode: false, bubbles: false, cheers: false };
 
     const id = line.id;
 
@@ -206,60 +212,194 @@
       actors.CEREMONY_MASTER.propR = "mic";
     }
 
-    // ---- SCENE 1 SPECIFIC BLOCKING ----
+    // =========================================================================
+    // SCENE 1 SPECIFIC BLOCKING & ACTING BEHAVIOURS
+    // =========================================================================
+    if (id === 1) {
+      // Makeup Master actively stands by Jeff
+      actors.MAKEUP_MASTER.x = 425;
+      actors.MAKEUP_MASTER.pose = "powderL";
+      actors.MAKEUP_MASTER.propL = "brush";
+      actors.MAKEUP_MASTER.propR = "powderPuff";
+      actors.MAKEUP_MASTER.act = "powderLeft";
+      actors.JEFF.x = 340;
+      actors.JEFF.powdered = true;
+    }
+
+    if (id === 2) {
+      // "The DIRECTOR stands center with a cardboard megaphone. MAKEUP MASTER is powdering JEFF/JESSY's face. CAMERA MAN adjusts a cardboard camera. THORWALD and DETECTIVE stretch in the corner."
+      actors.DIRECTOR.x = 960;
+      actors.DIRECTOR.pose = "holdR";
+      actors.DIRECTOR.propR = "megaphone";
+
+      actors.MAKEUP_MASTER.x = 420;
+      actors.MAKEUP_MASTER.pose = "powderL";
+      actors.MAKEUP_MASTER.propL = "brush";
+      actors.MAKEUP_MASTER.propR = "powderPuff";
+      actors.MAKEUP_MASTER.act = "powderLeft";
+
+      actors.JEFF.x = 340;
+      actors.JEFF.powdered = true;
+      actors.JEFF.pose = "chin";
+
+      actors.CAMERA_MAN.x = 1170;
+      actors.CAMERA_MAN.pose = "filmCam";
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.act = "adjustCamera";
+
+      actors.THORWALD.x = 1680;
+      actors.THORWALD.pose = "stretch";
+      actors.DETECTIVE.x = 1520;
+      actors.DETECTIVE.pose = "stretch";
+    }
+
+    if (id === 3) {
+      // Director booms through megaphone
+      actors.DIRECTOR.pose = "wide";
+      actors.DIRECTOR.propR = "megaphone";
+      // Makeup master still adding final powder to Jeff
+      actors.MAKEUP_MASTER.x = 420;
+      actors.MAKEUP_MASTER.pose = "powderL";
+      actors.MAKEUP_MASTER.propL = "brush";
+      actors.MAKEUP_MASTER.propR = "powderPuff";
+      actors.MAKEUP_MASTER.act = "powderLeft";
+      actors.JEFF.powdered = true;
+    }
+
     if (id === 4 || id === 5) {
-      // Luciana: "Director! The lights are flickering!"
+      // Luciana points up at flickering ceiling lights
       fx.flicker = true;
       actors.ASSISTANT_DIRECTOR.x = 790;
       actors.ASSISTANT_DIRECTOR.scale = 1.02;
       actors.ASSISTANT_DIRECTOR.pose = "pointUp";
       actors.ASSISTANT_DIRECTOR.expr = "worried";
       actors.LISA.pose = "pointUp";
+      actors.DIRECTOR.pose = "pointUp";
     }
+
+    if (id === 6) {
+      // Director snaps fingers in command
+      actors.DIRECTOR.pose = "snap";
+      actors.DIRECTOR.act = "snapFingers";
+    }
+
     if (id === 7) {
+      // Prop Master puts rocks into suitcase
+      actors.PROP_MASTER.x = 1200;
+      actors.PROP_MASTER.pose = "holdBoth";
       actors.PROP_MASTER.propL = "suitcase";
-      actors.PROP_MASTER.pose = "holdUpR";
       actors.PROP_MASTER.propR = "rock";
+      actors.PROP_MASTER.act = "packRocks";
     }
+
     if (id === 8) {
-      actors.DETECTIVE.pose = "stretch";
+      // Detective practices tough-guy walk across stage
+      actors.DETECTIVE.x = 1280;
+      actors.DETECTIVE.pose = "hips";
+      actors.DETECTIVE.act = "toughWalk";
+      actors.DETECTIVE.expr = "smug";
     }
+
     if (id === 9) {
+      // Thorwald boasts and flexes muscles
+      actors.THORWALD.x = 1600;
       actors.THORWALD.pose = "flex";
+      actors.THORWALD.act = "flexMuscle";
       actors.THORWALD.expr = "laugh";
     }
-    if (id >= 11 && id <= 15) {
+
+    if (id === 10) {
+      // Jeff playfully teases Thorwald
+      actors.JEFF.expr = "happy";
+      actors.JEFF.pose = "point";
+    }
+
+    if (id === 11) {
+      // Thorwald laughs loud, then smile fades and turns away
+      actors.THORWALD.act = "laughThenFade";
+    }
+
+    if (id >= 12 && id <= 15) {
       // Private warm moment between Luciana (Assistant Director) and Thorwald
       actors.ASSISTANT_DIRECTOR.x = 1380;
       actors.ASSISTANT_DIRECTOR.scale = 1.02;
       actors.THORWALD.x = 1560;
       actors.THORWALD.scale = 0.98;
-      if (id === 11 || id === 12 || id === 13) {
+
+      if (id === 12 || id === 13) {
         actors.THORWALD.expr = "sad";
         actors.THORWALD.pose = "selfHug";
+        actors.THORWALD.sweat = true;
         actors.ASSISTANT_DIRECTOR.expr = "worried";
         actors.ASSISTANT_DIRECTOR.pose = "openR";
       }
       if (id === 14) {
-        // Luciana hand on Thorwald's shoulder
-        actors.ASSISTANT_DIRECTOR.x = 1420;
+        // Luciana gently places hand on Thorwald's shoulder
+        actors.ASSISTANT_DIRECTOR.x = 1440;
         actors.ASSISTANT_DIRECTOR.pose = "reachR";
+        actors.ASSISTANT_DIRECTOR.act = "comfortRight";
         actors.ASSISTANT_DIRECTOR.expr = "tender";
         actors.THORWALD.expr = "surprised";
+        actors.THORWALD.sweat = false;
       }
       if (id === 15) {
         actors.THORWALD.pose = "flex";
         actors.THORWALD.expr = "happy";
       }
     }
-    if (id === 18 || id === 19) {
-      actors.MAKEUP_MASTER.x = 450;
-      actors.MAKEUP_MASTER.pose = "reachL";
+
+    if (id === 16 || id === 17) {
+      // Thorwald walks off, Jeff quietly observes with camera
+      actors.THORWALD.x = 1750;
+      actors.THORWALD.expr = "worried";
+      actors.JEFF.pose = "chin";
+      actors.JEFF.propR = "camera";
     }
-    if (id === 21 || id === 22) {
-      fx.clapper = true;
+
+    if (id === 18) {
+      // Makeup master finishes close-up powdering on Jeff
+      actors.MAKEUP_MASTER.x = 420;
+      actors.MAKEUP_MASTER.pose = "powderL";
+      actors.MAKEUP_MASTER.propL = "brush";
+      actors.MAKEUP_MASTER.propR = "powderPuff";
+      actors.MAKEUP_MASTER.act = "powderLeft";
+      actors.JEFF.powdered = true;
+    }
+
+    if (id === 19) {
+      // Makeup master steps back, satisfied
+      actors.MAKEUP_MASTER.x = 485;
+      actors.MAKEUP_MASTER.pose = "showR";
+      actors.JEFF.powdered = false;
+    }
+
+    if (id === 20) {
+      actors.LISA.x = 440;
+      actors.LISA.pose = "tender";
+    }
+
+    if (id === 21) {
+      // Camera man raises clapperboard open
+      actors.CAMERA_MAN.x = 1080;
       actors.CAMERA_MAN.pose = "raiseR";
+      actors.CAMERA_MAN.propR = "clapper";
+      actors.CAMERA_MAN.act = "clapOpen";
     }
+
+    if (id === 22) {
+      // Camera man snaps clapperboard: "Scene One, Take One!"
+      fx.clapper = true;
+      actors.CAMERA_MAN.x = 1080;
+      actors.CAMERA_MAN.pose = "raiseR";
+      actors.CAMERA_MAN.propR = "clapper";
+      actors.CAMERA_MAN.act = "clapBoard";
+    }
+
+    if (id === 23) {
+      actors.DIRECTOR.pose = "raiseR";
+      actors.DIRECTOR.propR = "megaphone";
+    }
+
     if (id >= 24 && id <= 29) {
       // Film Scene 1 inside Rear Window
       fx.filmMode = true;
@@ -267,35 +407,138 @@
       actors.JEFF.x = 580;
       actors.JEFF.scale = 0.98;
       actors.JEFF.pose = "binocs";
+      actors.JEFF.propR = "binoculars";
+      actors.JEFF.act = "peerBinocs";
+
       actors.LISA.x = 430;
       actors.LISA.scale = 0.92;
       actors.THORWALD.x = 1480;
       actors.THORWALD.pose = "hairTouch";
-      if (id === 25) actors.JEFF.pose = "point";
+
+      actors.CAMERA_MAN.x = 1100;
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.pose = "filmCam";
+      actors.CAMERA_MAN.act = "filmScene";
+
+      if (id === 25) {
+        // Jeff: "Look! Miss Lonelyhearts is crying again."
+        actors.JEFF.pose = "point";
+        actors.MISS_LONELYHEARTS.vis = true;
+        actors.MISS_LONELYHEARTS.x = 290;
+        actors.MISS_LONELYHEARTS.y = 660;
+        actors.MISS_LONELYHEARTS.scale = 0.72;
+        actors.MISS_LONELYHEARTS.pose = "eyes";
+        actors.MISS_LONELYHEARTS.crying = true;
+      }
       if (id === 26) actors.LISA.pose = "wag";
       if (id === 27) actors.JEFF.pose = "palmsOut";
     }
 
-    // ---- SCENE 2 SPECIFIC BLOCKING ----
-    if (id === 33) fx.clapper = true;
+    if (id === 30) {
+      // Director claps hands: "CUT!"
+      actors.DIRECTOR.pose = "snap";
+      actors.DIRECTOR.act = "clapHands";
+    }
+
+    // =========================================================================
+    // SCENE 2 SPECIFIC BLOCKING & ACTING BEHAVIOURS
+    // =========================================================================
+    if (id === 33) {
+      // Camera man snaps clapperboard
+      fx.clapper = true;
+      actors.CAMERA_MAN.x = 1320;
+      actors.CAMERA_MAN.pose = "raiseR";
+      actors.CAMERA_MAN.propR = "clapper";
+      actors.CAMERA_MAN.act = "clapBoard";
+    }
+
     if (id >= 35 && id <= 42) {
       fx.filmMode = true;
-      fx.musicNotes = id <= 36;
       actors.MISS_LONELYHEARTS.x = 780;
       actors.ARTIST.x = 1090;
-      if (id === 36) actors.MISS_LONELYHEARTS.pose = "eyes";
+
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.pose = "filmCam";
+      actors.CAMERA_MAN.act = "filmScene";
+
+      if (id <= 36) {
+        fx.musicNotes = true;
+        actors.ARTIST.pose = "ukulele";
+        actors.ARTIST.propR = "ukulele";
+        actors.ARTIST.act = "strumUkulele";
+      }
+
+      if (id === 36) {
+        actors.MISS_LONELYHEARTS.pose = "eyes";
+        actors.MISS_LONELYHEARTS.propR = "hanky";
+        actors.MISS_LONELYHEARTS.crying = true;
+        actors.MISS_LONELYHEARTS.act = "wipeTears";
+      }
+
+      if (id === 38) {
+        actors.MISS_LONELYHEARTS.crying = false;
+        actors.MISS_LONELYHEARTS.pose = "handChest";
+      }
+
+      if (id === 40) {
+        actors.ARTIST.pose = "holdBoth";
+        actors.ARTIST.propR = "clay";
+        actors.ARTIST.act = "sculptClay";
+      }
+
       if (id === 41) {
         actors.ARTIST.propR = "clay";
         actors.ARTIST.pose = "holdUpR";
+        actors.ARTIST.act = "showPropR";
       }
+
       if (id === 42) actors.MISS_LONELYHEARTS.pose = "handChest";
     }
+
+    if (id === 43) {
+      actors.DIRECTOR.pose = "snap";
+      actors.DIRECTOR.act = "clapHands";
+    }
+
+    if (id === 46) {
+      // Makeup master rushes over to powder Miss Lonelyhearts
+      actors.MAKEUP_MASTER.x = 680;
+      actors.MAKEUP_MASTER.pose = "powderR";
+      actors.MAKEUP_MASTER.propR = "brush";
+      actors.MAKEUP_MASTER.propL = "powderPuff";
+      actors.MAKEUP_MASTER.act = "powderRight";
+      actors.MISS_LONELYHEARTS.x = 780;
+      actors.MISS_LONELYHEARTS.powdered = true;
+    }
+
+    if (id === 47) {
+      actors.PROP_MASTER.sweat = true;
+      actors.PROP_MASTER.pose = "palmsOut";
+    }
+
+    if (id === 48) {
+      // Detective sprints to fetch clay
+      actors.DETECTIVE.pose = "wide";
+      actors.DETECTIVE.propL = "clay";
+      actors.DETECTIVE.act = "sprintRun";
+    }
+
+    if (id === 49) {
+      // Camera man catches falling camera
+      actors.CAMERA_MAN.pose = "holdBoth";
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.act = "catchCamera";
+      actors.CAMERA_MAN.sweat = true;
+    }
+
     if (id >= 50 && id <= 52) {
       actors.LISA.vis = true;
       actors.JEFF.vis = true;
     }
 
-    // ---- SCENE 2.5 SPECIFIC BLOCKING (THE PLAYLIST PROBLEM) ----
+    // =========================================================================
+    // SCENE 2.5 SPECIFIC BLOCKING & ACTING BEHAVIOURS (THE PLAYLIST PROBLEM)
+    // =========================================================================
     if (id === 54 || id === 55) {
       // Prop Master & Luciana run in holding portable speaker
       actors.PROP_MASTER.x = 830;
@@ -304,6 +547,7 @@
       actors.ASSISTANT_DIRECTOR.propR = "speaker";
       actors.ASSISTANT_DIRECTOR.pose = "speaker";
     }
+
     if (id === 57 || id === 58) {
       fx.musicNotes = true;
       ALL_ACTORS.forEach((c) => {
@@ -314,6 +558,16 @@
         actors.DIRECTOR.expr = "grumpy";
       }
     }
+
+    if (id === 60) {
+      // Detective nudges Thorwald
+      actors.DETECTIVE.x = 1380;
+      actors.DETECTIVE.pose = "nudge";
+      actors.DETECTIVE.act = "elbowNudge";
+      actors.THORWALD.x = 1470;
+      actors.THORWALD.pose = "crossed";
+    }
+
     if (id === 62) {
       // Luciana: "Okay — try this one!"
       actors.ASSISTANT_DIRECTOR.x = 960;
@@ -321,8 +575,9 @@
       actors.ASSISTANT_DIRECTOR.pose = "raiseR";
       actors.ASSISTANT_DIRECTOR.expr = "laugh";
     }
-    if (id === 63 || id === 64 || id === 65) {
-      // Rock trend #2 + Luciana nodding along: "Hm... this has some style. Rough, but I like the energy."
+
+    if (id === 63 || id === 64) {
+      // Rock trend #2: Cast does air guitar & headbanging!
       fx.musicNotes = true;
       fx.rockMode = true;
       actors.ASSISTANT_DIRECTOR.x = 960;
@@ -330,10 +585,29 @@
       actors.ASSISTANT_DIRECTOR.nod = true;
       actors.ASSISTANT_DIRECTOR.pose = "hips";
       actors.ASSISTANT_DIRECTOR.expr = "happy";
+
       ["PROP_MASTER", "DETECTIVE", "CAMERA_MAN", "LISA", "ARTIST"].forEach((c) => {
+        actors[c].act = "airGuitar";
         actors[c].dance = true;
       });
     }
+
+    if (id === 65) {
+      // Thorwald's foot taps despite himself!
+      actors.THORWALD.pose = "crossed";
+      actors.THORWALD.act = "tapFoot";
+    }
+
+    if (id === 66) {
+      // Makeup master fixes Director's hair
+      actors.MAKEUP_MASTER.x = 480;
+      actors.MAKEUP_MASTER.pose = "powderR";
+      actors.MAKEUP_MASTER.propR = "brush";
+      actors.MAKEUP_MASTER.act = "powderRight";
+      actors.DIRECTOR.x = 560;
+      actors.DIRECTOR.powdered = true;
+    }
+
     if (id >= 68 && id <= 72) {
       // Crowd-favorite song #3 — everyone dances!
       fx.musicNotes = true;
@@ -346,43 +620,127 @@
         }
       });
       actors.ASSISTANT_DIRECTOR.scale = 1.04;
+      if (id === 72) {
+        // Thorwald's foot taps to the beat
+        actors.THORWALD.act = "tapFoot";
+      }
     }
 
-    // ---- SCENE 3 SPECIFIC BLOCKING (THE VILLAIN'S FEAR) ----
+    if (id === 73) {
+      actors.DIRECTOR.sweat = true;
+      actors.DIRECTOR.pose = "handChest";
+    }
+
+    // =========================================================================
+    // SCENE 3 SPECIFIC BLOCKING & ACTING BEHAVIOURS (THE VILLAIN'S FEAR)
+    // =========================================================================
     if (id >= 75 && id <= 77) {
       actors.THORWALD.x = 1040;
       actors.THORWALD.pose = "selfHug";
       actors.THORWALD.expr = "scared";
+      actors.THORWALD.sweat = true;
       actors.JEFF.x = 720;
     }
-    if (id === 78 || id === 80) fx.clapper = true;
+
+    if (id === 78 || id === 79) {
+      actors.CAMERA_MAN.pose = "raiseR";
+      actors.CAMERA_MAN.propR = "clapper";
+      actors.CAMERA_MAN.act = "clapOpen";
+      actors.DIRECTOR.nod = true;
+    }
+
+    if (id === 80) {
+      // Camera man snaps clapperboard
+      fx.clapper = true;
+      actors.CAMERA_MAN.pose = "raiseR";
+      actors.CAMERA_MAN.propR = "clapper";
+      actors.CAMERA_MAN.act = "clapBoard";
+    }
+
     if (id >= 81 && id <= 85) {
       fx.filmMode = true;
       lighting = "thriller";
       actors.JEFF.x = 640;
+      actors.JEFF.propR = "binoculars";
+      actors.JEFF.pose = "binocs";
+      actors.JEFF.act = "peerBinocs";
+
       actors.THORWALD.x = 1180;
       actors.THORWALD.pose = "loom";
       actors.THORWALD.expr = id >= 85 ? "scared" : "angry";
-      if (id === 85) actors.THORWALD.shake = true;
+
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.pose = "filmCam";
+      actors.CAMERA_MAN.act = "filmScene";
+
+      if (id === 84 || id === 85) {
+        // Thorwald freezes mid-line, hand raised and trembling!
+        actors.THORWALD.x = 920;
+        actors.THORWALD.act = "freezeTremble";
+        actors.THORWALD.sweat = true;
+      }
     }
+
     if (id >= 86 && id <= 98) {
-      // Everyone gathers around Thorwald on the floor; Luciana sits right beside him!
+      // Thorwald drops to knees, breaking down
       lighting = "warm";
       actors.THORWALD.x = 980;
       actors.THORWALD.stance = "kneel";
       actors.THORWALD.expr = id < 97 ? "sad" : "happy";
+      if (id === 86) {
+        actors.THORWALD.crying = true;
+        actors.THORWALD.sweat = true;
+      }
+
       actors.DIRECTOR.x = 1140;
       actors.DIRECTOR.stance = id <= 90 ? "kneel" : "stand";
+
+      // Luciana sits right beside Thorwald on the floor
       actors.ASSISTANT_DIRECTOR.x = 830;
       actors.ASSISTANT_DIRECTOR.scale = 1.04;
       actors.ASSISTANT_DIRECTOR.stance = "floor";
       actors.ASSISTANT_DIRECTOR.pose = "reachR";
+      actors.ASSISTANT_DIRECTOR.act = "comfortRight";
       actors.ASSISTANT_DIRECTOR.expr = "tender";
+
       actors.LISA.x = 690;
       actors.LISA.stance = id === 91 ? "kneel" : "stand";
+
       actors.CAMERA_MAN.x = 1280;
       actors.CAMERA_MAN.stance = id === 95 ? "floor" : "stand";
+      actors.CAMERA_MAN.propL = "camera";
+
+      if (id === 92) {
+        // Prop master hands lucky rock to Thorwald
+        actors.PROP_MASTER.x = 1090;
+        actors.PROP_MASTER.stance = "kneel";
+        actors.PROP_MASTER.propL = "rock";
+        actors.PROP_MASTER.act = "giveRock";
+      }
+
+      if (id === 94) {
+        // Artist shows clay horse
+        actors.ARTIST.x = 760;
+        actors.ARTIST.propR = "horse";
+        actors.ARTIST.pose = "showR";
+        actors.ARTIST.act = "showPropR";
+      }
+
+      if (id === 98) {
+        // Thorwald stands, holding lucky rock
+        actors.THORWALD.stance = "stand";
+        actors.THORWALD.propR = "rock";
+        actors.THORWALD.crying = false;
+        actors.THORWALD.sweat = false;
+      }
     }
+
+    if (id === 100) {
+      // Camera man snaps clapperboard
+      fx.clapper = true;
+      actors.CAMERA_MAN.act = "clapBoard";
+    }
+
     if (id >= 101 && id <= 103) {
       fx.filmMode = true;
       lighting = "thriller";
@@ -390,18 +748,32 @@
       actors.THORWALD.stance = "stand";
       actors.THORWALD.pose = "loom";
       actors.THORWALD.expr = "angry";
+      actors.THORWALD.propR = "rock";
+
       actors.JEFF.x = 640;
       actors.JEFF.pose = "armsUp";
       actors.JEFF.expr = "scared";
+
+      actors.CAMERA_MAN.propL = "camera";
+      actors.CAMERA_MAN.pose = "filmCam";
+      actors.CAMERA_MAN.act = "filmScene";
     }
 
-    // ---- SCENE 4 SPECIFIC BLOCKING (THE RELIEF) ----
+    if (id === 104) {
+      // Director claps: "CUT! CUT! PERFECT!"
+      actors.DIRECTOR.pose = "snap";
+      actors.DIRECTOR.act = "clapHands";
+    }
+
+    // =========================================================================
+    // SCENE 4 SPECIFIC BLOCKING & ACTING BEHAVIOURS (THE RELIEF)
+    // =========================================================================
     if (id === 105) {
       fx.cheers = true;
       fx.bubbles = true;
       ALL_ACTORS.forEach((c) => {
         if (actors[c].vis && c !== "THORWALD") {
-          actors[c].pose = "armsUp";
+          actors[c].act = "clapHands";
           actors[c].expr = "laugh";
           actors[c].dance = true;
         }
@@ -409,18 +781,26 @@
       actors.THORWALD.pose = "wide";
       actors.THORWALD.expr = "laugh";
       actors.THORWALD.scale = 1.04;
+      actors.THORWALD.propR = "rock";
     }
+
     if (id >= 105 && id <= 111) {
       fx.musicNotes = id >= 108;
       if (id >= 108) {
+        actors.THORWALD.act = "tapFoot";
         actors.THORWALD.dance = true;
         actors.LISA.dance = true;
         actors.DETECTIVE.dance = true;
         actors.ASSISTANT_DIRECTOR.dance = true;
       }
+      if (id === 110) {
+        actors.PROP_MASTER.act = "clapHands";
+      }
     }
 
-    // ---- SCENE 5 SPECIFIC BLOCKING (FINALE CURTAIN CALL) ----
+    // =========================================================================
+    // SCENE 5 SPECIFIC BLOCKING (FINALE CURTAIN CALL)
+    // =========================================================================
     if (id === 119) {
       // Luciana's Finale line: "Every job matters here, big or small."
       actors.ASSISTANT_DIRECTOR.scale = 1.06;
@@ -428,8 +808,9 @@
       actors.ASSISTANT_DIRECTOR.pose = "wide";
       actors.ASSISTANT_DIRECTOR.expr = "happy";
     }
+
     if (id === 125 || id === 126 || id === 127) {
-      // "Thank you all!" + Bow + Confetti/Bubbles dance
+      // "Thank you all!" + Bow + Confetti/Bubbles celebration
       fx.bubbles = true;
       fx.musicNotes = true;
       ALL_ACTORS.forEach((c) => {
@@ -437,7 +818,10 @@
         actors[c].pose = "wide";
         actors[c].expr = "laugh";
         if (id === 126) actors[c].bow = true;
-        if (id >= 126) actors[c].dance = true;
+        if (id >= 126) {
+          actors[c].dance = true;
+          actors[c].act = "clapHands";
+        }
       });
     }
 

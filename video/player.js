@@ -114,6 +114,14 @@
 
       el.style.opacity = st.vis ? "1" : "0";
 
+      // Tears, sweat, and makeup powder layers
+      const tearsLayer = el.querySelector(".tears-layer");
+      const sweatLayer = el.querySelector(".sweat-layer");
+      const powderLayer = el.querySelector(".powder-layer");
+      if (tearsLayer) tearsLayer.style.opacity = st.crying ? "1" : "0";
+      if (sweatLayer) sweatLayer.style.opacity = st.sweat ? "1" : "0";
+      if (powderLayer) powderLayer.style.opacity = st.powdered ? "1" : "0";
+
       // Stance classes (stand, sit, kneel, floor) & wheelchair
       el.classList.toggle("stance-sit", st.stance === "sit");
       el.classList.toggle("stance-kneel", st.stance === "kneel");
@@ -515,6 +523,141 @@
         cur.x += Math.sin(t * 38) * 1.8;
       } else if (tgt.bow) {
         rotDeg = 18;
+      }
+
+      // Dynamic Character Acting Behaviors (act)
+      const act = tgt.act || "";
+      const legL = el.querySelector(".leg-l");
+      const legR = el.querySelector(".leg-r");
+      const foreLEl = el.querySelector(".fore-L");
+      const foreREl = el.querySelector(".fore-R");
+      const clapArm = el.querySelector(".clap-arm");
+      const clackBurst = el.querySelector(".clack-burst");
+
+      // Walking & Running Leg Swing
+      const isWalking = walkingDist > 3;
+      if (act === "sprintRun" || (isWalking && act === "sprintRun")) {
+        const swing = Math.sin(t * 22) * 36;
+        if (legL) legL.style.transform = `rotate(${swing.toFixed(1)}deg)`;
+        if (legR) legR.style.transform = `rotate(${(-swing).toFixed(1)}deg)`;
+        bounceY = -Math.abs(Math.sin(t * 22)) * 14;
+      } else if (act === "toughWalk" || isWalking) {
+        const speed = act === "toughWalk" ? 9 : 14;
+        const amp = act === "toughWalk" ? 22 : 28;
+        const swing = Math.sin(t * speed) * amp;
+        if (legL) legL.style.transform = `rotate(${swing.toFixed(1)}deg)`;
+        if (legR) legR.style.transform = `rotate(${(-swing).toFixed(1)}deg)`;
+        if (act === "toughWalk") {
+          rotDeg = Math.sin(t * 4.5) * 4; // swagger sway
+        }
+      } else if (act === "tapFoot") {
+        if (legR) legR.style.transform = `rotate(${Math.sin(t * 16) > 0 ? -14 : 0}deg)`;
+        if (legL) legL.style.transform = "";
+      } else {
+        if (legL && legL.style.transform) legL.style.transform = "";
+        if (legR && legR.style.transform) legR.style.transform = "";
+      }
+
+      // Acting: Clapperboard Snap (CAMERA)
+      if (clapArm) {
+        if (act === "clapBoard") {
+          const phase = (t * 2.2) % 2;
+          if (phase < 1.3) {
+            clapArm.style.transform = "rotate(-38deg)";
+            if (clackBurst) clackBurst.setAttribute("opacity", "0");
+          } else {
+            clapArm.style.transform = "rotate(0deg)";
+            if (clackBurst) {
+              const burstOpac = phase < 1.6 ? "1" : "0";
+              clackBurst.setAttribute("opacity", burstOpac);
+            }
+          }
+        } else if (act === "clapOpen") {
+          clapArm.style.transform = "rotate(-34deg)";
+          if (clackBurst) clackBurst.setAttribute("opacity", "0");
+        } else {
+          clapArm.style.transform = "rotate(0deg)";
+          if (clackBurst) clackBurst.setAttribute("opacity", "0");
+        }
+      }
+
+      // Acting: Makeup Artist Powdering (MAKEUP)
+      if (act === "powderLeft" || act === "powderRight") {
+        const activeFore = act === "powderLeft" ? foreLEl : foreREl;
+        if (activeFore) {
+          const dapAngle = Math.sin(t * 16) * 22;
+          activeFore.style.transform = `rotate(${dapAngle.toFixed(1)}deg)`;
+        }
+      }
+
+      // Acting: Ukulele Strumming (ARTIST)
+      if (act === "strumUkulele") {
+        if (foreREl) {
+          const strum = Math.sin(t * 18) * 20;
+          foreREl.style.transform = `rotate(${(-40 + strum).toFixed(1)}deg)`;
+        }
+      }
+
+      // Acting: Sculpting Clay (ARTIST)
+      if (act === "sculptClay") {
+        if (foreLEl) foreLEl.style.transform = `rotate(${(Math.sin(t * 11) * 16).toFixed(1)}deg)`;
+        if (foreREl) foreREl.style.transform = `rotate(${(Math.cos(t * 11) * -16).toFixed(1)}deg)`;
+      }
+
+      // Acting: Wipe Tears (MISS_L)
+      if (act === "wipeTears") {
+        if (foreREl) {
+          const wipe = Math.sin(t * 7) * 16;
+          foreREl.style.transform = `rotate(${(-115 + wipe).toFixed(1)}deg)`;
+        }
+      }
+
+      // Acting: Freeze & Tremble (THORWALD)
+      if (act === "freezeTremble") {
+        cur.x += (Math.random() - 0.5) * 3;
+        bounceY += (Math.random() - 0.5) * 3;
+        rotDeg += (Math.random() - 0.5) * 2.5;
+      }
+
+      // Acting: Clap Hands (Ensemble / Party)
+      if (act === "clapHands") {
+        const clap = Math.abs(Math.sin(t * 14)) * 18;
+        if (foreLEl) foreLEl.style.transform = `rotate(${(50 - clap).toFixed(1)}deg)`;
+        if (foreREl) foreREl.style.transform = `rotate(${(-50 + clap).toFixed(1)}deg)`;
+      }
+
+      // Acting: Air Guitar (JEFF / STELLA)
+      if (act === "airGuitar") {
+        if (foreREl) {
+          const strum = Math.sin(t * 20) * 30;
+          foreREl.style.transform = `rotate(${strum.toFixed(1)}deg)`;
+        }
+      }
+
+      // Animated Tears Fall (crying)
+      if (tgt.crying) {
+        const tearL = el.querySelector(".tear-l");
+        const tearR = el.querySelector(".tear-r");
+        const dropY = (t * 36) % 18;
+        if (tearL) tearL.style.transform = `translateY(${dropY.toFixed(1)}px)`;
+        if (tearR) tearR.style.transform = `translateY(${dropY.toFixed(1)}px)`;
+      }
+
+      // Animated Sweat Drop (nervous/sweat)
+      if (tgt.sweat) {
+        const sweatDrop = el.querySelector(".sweat-drop");
+        const dropY = (t * 22) % 14;
+        if (sweatDrop) sweatDrop.style.transform = `translateY(${dropY.toFixed(1)}px)`;
+      }
+
+      // Animated Makeup Powder Puff Pulse on powdered face
+      if (tgt.powdered) {
+        const powderLayer = el.querySelector(".powder-layer");
+        if (powderLayer) {
+          const pScale = 0.95 + Math.sin(t * 10) * 0.12;
+          powderLayer.style.transform = `scale(${pScale.toFixed(2)})`;
+          powderLayer.style.transformOrigin = "0px -250px";
+        }
       }
 
       el.setAttribute(

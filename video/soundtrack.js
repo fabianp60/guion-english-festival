@@ -258,7 +258,7 @@
 
     // Line 11: "THORWALD laughs loudly — but his smile fades..."
     if (id === 11) {
-      playVoiceClips(["audio/sfx_11_laugh.mp3"], [80], 0.9);
+      playVoiceClips(["audio/sfx_11_laugh.wav"], [80], 0.9);
       return 3400;
     }
 
@@ -306,7 +306,7 @@
 
     // Line 98: "Everyone laughs softly. THORWALD breathes, stands, holds the lucky rock tight."
     if (id === 98) {
-      playVoiceClips(["audio/sfx_98_laugh_a.mp3", "audio/sfx_98_laugh_b.mp3"], [100, 450], 0.8);
+      playVoiceClips(["audio/sfx_98_laugh_a.wav", "audio/sfx_98_laugh_b.wav"], [100, 450], 0.85);
       return 3600;
     }
 
@@ -315,10 +315,10 @@
       playApplauseClaps(5.2);
       playVoiceClips(
         [
-          "audio/sfx_105_cheer_a.mp3",
-          "audio/sfx_105_cheer_b.mp3",
-          "audio/sfx_105_cheer_c.mp3",
-          "audio/sfx_105_cheer_d.mp3"
+          "audio/sfx_105_cheer_a.wav",
+          "audio/sfx_105_cheer_b.wav",
+          "audio/sfx_105_cheer_c.wav",
+          "audio/sfx_105_cheer_d.wav"
         ],
         [60, 420, 880, 1350],
         0.95
@@ -339,7 +339,7 @@
     if (id === 126) {
       startCrowdFavorite3(1.0, 2);
       playApplauseClaps(6.0);
-      playVoiceClips(["audio/sfx_126_finale_a.mp3", "audio/sfx_126_finale_b.mp3"], [250, 950], 0.9);
+      playVoiceClips(["audio/sfx_126_finale_a.wav", "audio/sfx_126_finale_b.wav"], [250, 950], 0.9);
       return 6500;
     }
 

@@ -56,10 +56,55 @@
     .filter((l) => l.isLuciana)
     .sort((a, b) => a.lucianaOrder - b.lucianaOrder);
 
-  // Web Speech Voices
+  // Neural Audio (Gemini 3.8 TTS) + Web Speech Fallback
   let availableVoices = [];
   let activeUtterance = null;
   let karaokeTimer = null;
+  let neuralAudioEl = new Audio();
+  let neuralExtraAudios = [];
+  let neuralRafId = null;
+
+  function normTextForMatch(s) {
+    return (s || "")
+      .toLowerCase()
+      .replace(/\(.*?\)/g, "")
+      .replace(/[^a-z0-9\s]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function findNeuralAudioInfo(text, options = {}) {
+    const audioMap = window.VIDEO_AUDIO;
+    if (!audioMap) return null;
+
+    if (options.lineId && audioMap[String(options.lineId)]) {
+      return audioMap[String(options.lineId)];
+    }
+
+    const targetNorm = normTextForMatch(text);
+    if (!targetNorm || targetNorm.split(" ").length < 2) return null;
+
+    // 1. Exact dialogue line match
+    for (const l of SCRIPT_DATA.lines) {
+      if (l.type === "dialogue" && normTextForMatch(l.en) === targetNorm) {
+        if (audioMap[String(l.id)]) return audioMap[String(l.id)];
+      }
+    }
+
+    // 2. Cue substring match (e.g. "...Biggest indoor set ever built! Don't break anything!")
+    if (targetNorm.length >= 16) {
+      for (const l of SCRIPT_DATA.lines) {
+        if (l.type === "dialogue") {
+          const lNorm = normTextForMatch(l.en);
+          if (lNorm && (lNorm.includes(targetNorm) || targetNorm.includes(lNorm))) {
+            if (audioMap[String(l.id)]) return audioMap[String(l.id)];
+          }
+        }
+      }
+    }
+
+    return null;
+  }
 
   // ================= INITIALIZATION =================
   function loadProgress() {
@@ -186,6 +231,22 @@
   }
 
   function stopAllSpeech() {
+    if (neuralRafId) {
+      cancelAnimationFrame(neuralRafId);
+      neuralRafId = null;
+    }
+    if (neuralAudioEl) {
+      neuralAudioEl.pause();
+      neuralAudioEl.onended = null;
+      neuralAudioEl.onerror = null;
+    }
+    neuralExtraAudios.forEach((a) => {
+      try {
+        a.pause();
+      } catch (e) {}
+    });
+    neuralExtraAudios = [];
+
     if ("speechSynthesis" in window) {
       window.speechSynthesis.cancel();
     }
@@ -199,12 +260,89 @@
   }
 
   /**
-   * Speaks English text with synchronized word-by-word highlight callback
+   * Speaks English text using Gemini 3.8 TTS neural child voices (from window.VIDEO_AUDIO)
+   * with synchronized word-by-word highlight callback, or falls back to Web Speech API
+   * for isolated dictionary words/chunks.
    */
   function speakEnglish(text, options = {}) {
     stopAllSpeech();
+
+    const neuralInfo = findNeuralAudioInfo(text, options);
+    if (neuralInfo && neuralInfo.file) {
+      const srcPath = neuralInfo.file.startsWith("video/") ? neuralInfo.file : `video/${neuralInfo.file}`;
+      neuralAudioEl.src = srcPath;
+      // Map app rate (0.68 slow, 0.9 normal, 1.02 fluent) to natural audio playbackRate
+      const reqRate = options.rate || state.speechRate || 0.9;
+      const playbackRate = reqRate < 0.78 ? 0.8 : reqRate > 0.98 ? 1.06 : 1.0;
+      neuralAudioEl.playbackRate = playbackRate;
+
+      if (Array.isArray(neuralInfo.extra)) {
+        neuralExtraAudios = neuralInfo.extra.map((x) => {
+          const exPath = x.file.startsWith("video/") ? x.file : `video/${x.file}`;
+          const a = new Audio(exPath);
+          a.playbackRate = playbackRate;
+          a.volume = 0.55;
+          a.play().catch(() => {});
+          return a;
+        });
+      }
+
+      const wordsMeta = Array.isArray(neuralInfo.words) ? neuralInfo.words : [];
+      let lastWordIdx = -1;
+
+      const updateHighlightLoop = () => {
+        if (neuralAudioEl.paused) return;
+        const elapsedMs = neuralAudioEl.currentTime * 1000;
+        if (options.onWord && wordsMeta.length > 0) {
+          let activeIdx = -1;
+          for (let i = 0; i < wordsMeta.length; i++) {
+            const w = wordsMeta[i];
+            if (elapsedMs >= w.s - 25 && elapsedMs <= w.e + 70) {
+              activeIdx = i;
+              break;
+            }
+            if (elapsedMs > w.e) {
+              activeIdx = i;
+            }
+          }
+          if (activeIdx !== lastWordIdx && activeIdx >= 0) {
+            lastWordIdx = activeIdx;
+            options.onWord(activeIdx);
+          }
+        }
+        neuralRafId = requestAnimationFrame(updateHighlightLoop);
+      };
+
+      neuralAudioEl.onended = () => {
+        if (neuralRafId) cancelAnimationFrame(neuralRafId);
+        neuralRafId = null;
+        if (options.onWord) options.onWord(-1);
+        if (options.onEnd) options.onEnd();
+      };
+
+      neuralAudioEl.onerror = () => {
+        if (neuralRafId) cancelAnimationFrame(neuralRafId);
+        neuralRafId = null;
+        if (options.onWord) options.onWord(-1);
+        if (options.onEnd) options.onEnd();
+      };
+
+      neuralAudioEl
+        .play()
+        .then(() => {
+          if (options.onWord && wordsMeta.length > 0) {
+            options.onWord(0);
+            lastWordIdx = 0;
+          }
+          neuralRafId = requestAnimationFrame(updateHighlightLoop);
+        })
+        .catch(() => {
+          if (options.onEnd) options.onEnd();
+        });
+      return;
+    }
+
     if (!("speechSynthesis" in window)) {
-      alert("Tu navegador no soporta voz integrada. Te recomendamos abrir la aplicación en Google Chrome, Edge o Safari.");
       if (options.onEnd) options.onEnd();
       return;
     }
